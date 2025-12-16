@@ -1,0 +1,416 @@
+/* Reset and base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  background: #000;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ========================================
+   ACCESSIBILITY - Visually Hidden
+   ======================================== */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ========================================
+   HERO SECTION
+   ======================================== */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #000;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Scanline Cyber Overlay */
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.03) 0px,
+    rgba(255, 255, 255, 0.03) 1px,
+    transparent 2px,
+    transparent 4px
+  );
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  animation: scanMove 6s linear infinite;
+  z-index: 10;
+}
+
+@keyframes scanMove {
+  from { background-position: 0 0; }
+  to { background-position: 0 100%; }
+}
+
+/* ========================================
+   LOGO TEXT CONTAINER
+   ======================================== */
+.logo-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2vw;
+  position: relative;
+  z-index: 1;
+}
+
+.word {
+  display: flex;
+  gap: 1vw;
+  justify-content: center;
+}
+
+/* ========================================
+   LETTER BASE STYLES
+   ======================================== */
+.letter {
+  width: 8vw;
+  height: 12vw;
+  max-width: 140px;
+  max-height: 200px;
+  position: relative;
+  overflow: hidden;
+
+  background-image: url("https://lh3.googleusercontent.com/gps-cs-s/AG0ilSzCDdl5Z7FIUX36IyH8oyRguIGphN0BBiXXHwg7oJZAsjh6P4uVqvS_XQZW1RouxVNU_w2zjpB6cgbpT71GM41M0sjGosoZWx679WN4PO3ucD0uDjn5xteiW7gUaqbBJbylQ0r1XA=s1360-w1360-h1020-rw");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  filter: contrast(1.1) saturate(1.1);
+
+  /* Image drift + flicker animation */
+  animation:
+    imageDrift 18s ease-in-out infinite alternate,
+    flicker 6s infinite;
+  will-change: background-position, transform, opacity;
+}
+
+/* ========================================
+   GLITCH LAYERS (RGB SPLIT)
+   ======================================== */
+.letter::before,
+.letter::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background-image: inherit;
+  background-size: cover;
+  background-position: center;
+
+  mix-blend-mode: screen;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.letter::before {
+  transform: translate(1px, -1px);
+  filter: hue-rotate(15deg);
+  animation: glitchShift 2.5s infinite steps(1, end);
+}
+
+.letter::after {
+  transform: translate(-1px, 1px);
+  filter: hue-rotate(-15deg);
+  animation: glitchShift 3s infinite steps(1, end);
+}
+
+/* ========================================
+   KEYFRAME ANIMATIONS
+   ======================================== */
+
+/* Image drift inside letters */
+@keyframes imageDrift {
+  0%   { background-position: 50% 50%; }
+  50%  { background-position: 55% 45%; }
+  100% { background-position: 45% 55%; }
+}
+
+/* Glitch jitter effect */
+@keyframes glitchShift {
+  0%   { clip-path: inset(0 0 0 0); }
+  10%  { clip-path: inset(10% 0 85% 0); }
+  20%  { clip-path: inset(80% 0 5% 0); }
+  30%  { clip-path: inset(40% 0 43% 0); }
+  40%  { clip-path: inset(0 0 0 0); }
+  100% { clip-path: inset(0 0 0 0); }
+}
+
+/* Subtle flicker effect */
+@keyframes flicker {
+  0%, 95%, 100% { opacity: 1; }
+  96% { opacity: 0.85; }
+  97% { opacity: 1; }
+  98% { opacity: 0.9; }
+}
+
+/* ========================================
+   CLIP-PATH LETTER SHAPES
+   ======================================== */
+
+/* Letter D - Rounded right side */
+.d {
+  clip-path: polygon(
+    0% 0%,
+    60% 0%,
+    80% 5%,
+    95% 15%,
+    100% 30%,
+    100% 70%,
+    95% 85%,
+    80% 95%,
+    60% 100%,
+    0% 100%,
+    0% 80%,
+    25% 80%,
+    40% 78%,
+    50% 70%,
+    50% 30%,
+    40% 22%,
+    25% 20%,
+    0% 20%
+  );
+}
+
+/* Letter A - Triangle with crossbar cutout */
+.a {
+  clip-path: polygon(
+    50% 0%,
+    100% 100%,
+    80% 100%,
+    70% 75%,
+    30% 75%,
+    20% 100%,
+    0% 100%,
+    50% 0%,
+    50% 0%,
+    35% 55%,
+    65% 55%,
+    50% 20%
+  );
+}
+
+/* Letter N - Diagonal stroke */
+.n {
+  clip-path: polygon(
+    0% 100%,
+    0% 0%,
+    20% 0%,
+    20% 60%,
+    80% 0%,
+    100% 0%,
+    100% 100%,
+    80% 100%,
+    80% 40%,
+    20% 100%
+  );
+}
+
+/* Letter N (second instance) */
+.n2 {
+  clip-path: polygon(
+    0% 100%,
+    0% 0%,
+    20% 0%,
+    20% 60%,
+    80% 0%,
+    100% 0%,
+    100% 100%,
+    80% 100%,
+    80% 40%,
+    20% 100%
+  );
+}
+
+/* Letter Y - Fork shape */
+.y {
+  clip-path: polygon(
+    0% 0%,
+    20% 0%,
+    50% 40%,
+    80% 0%,
+    100% 0%,
+    60% 55%,
+    60% 100%,
+    40% 100%,
+    40% 55%
+  );
+}
+
+/* Letter I - Simple rectangle */
+.i {
+  clip-path: polygon(
+    20% 0%,
+    80% 0%,
+    80% 100%,
+    20% 100%
+  );
+}
+
+/* Letter I (second instance) */
+.i2 {
+  clip-path: polygon(
+    20% 0%,
+    80% 0%,
+    80% 100%,
+    20% 100%
+  );
+}
+
+/* Letter G - C shape with inner bar */
+.g {
+  clip-path: polygon(
+    100% 20%,
+    100% 0%,
+    30% 0%,
+    10% 10%,
+    0% 30%,
+    0% 70%,
+    10% 90%,
+    30% 100%,
+    100% 100%,
+    100% 50%,
+    50% 50%,
+    50% 80%,
+    25% 80%,
+    20% 70%,
+    20% 30%,
+    25% 20%,
+    100% 20%
+  );
+}
+
+/* Letter T - T shape */
+.t {
+  clip-path: polygon(
+    0% 0%,
+    100% 0%,
+    100% 20%,
+    60% 20%,
+    60% 100%,
+    40% 100%,
+    40% 20%,
+    0% 20%
+  );
+}
+
+/* Letter L - L shape */
+.l {
+  clip-path: polygon(
+    0% 0%,
+    25% 0%,
+    25% 80%,
+    100% 80%,
+    100% 100%,
+    0% 100%
+  );
+}
+
+/* ========================================
+   ENTER LINK
+   ======================================== */
+.enter-link {
+  position: absolute;
+  bottom: 8vh;
+  left: 50%;
+  transform: translateX(-50%);
+
+  font-family: 'Arial Black', 'Helvetica Neue', sans-serif;
+  font-size: clamp(1rem, 2vw, 1.5rem);
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-decoration: none;
+  color: #fff;
+
+  padding: 1em 2em;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  background: transparent;
+
+  transition: all 0.3s ease;
+  z-index: 20;
+}
+
+.enter-link:hover {
+  color: #000;
+  background: #fff;
+  border-color: #fff;
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+}
+
+.enter-link:active {
+  transform: translateX(-50%) scale(0.95);
+}
+
+/* ========================================
+   RESPONSIVE - Mobile
+   ======================================== */
+@media (max-width: 768px) {
+  .letter {
+    width: 12vw;
+    height: 18vw;
+    max-width: none;
+    max-height: none;
+  }
+
+  .logo-text {
+    gap: 3vw;
+  }
+
+  .word {
+    gap: 1.5vw;
+  }
+}
+
+/* ========================================
+   RESPONSIVE - Small Mobile
+   ======================================== */
+@media (max-width: 480px) {
+  .letter {
+    width: 13vw;
+    height: 19.5vw;
+  }
+
+  .logo-text {
+    gap: 4vw;
+  }
+
+  .word {
+    gap: 2vw;
+  }
+}
+
+/* ========================================
+   PERFORMANCE - Reduced Motion
+   ======================================== */
+@media (prefers-reduced-motion: reduce) {
+  .letter,
+  .letter::before,
+  .letter::after,
+  .hero::after {
+    animation: none;
+  }
+
+  .letter {
+    opacity: 1;
+  }
+}
